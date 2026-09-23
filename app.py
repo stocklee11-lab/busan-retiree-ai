@@ -4,9 +4,10 @@ import pydeck as pdk
 from sklearn.metrics.pairwise import cosine_similarity
 import streamlit as st
 
+# st.set_page_config는 반드시 최상단(다른 st 명령어가 나오기 전)에 위치해야 합니다.
 st.set_page_config(
-    page_title="부산 은퇴자 거주지 추천 AI",  # 브라우저 탭 및 PWA 앱 이름
-    page_icon="🏠",  # 아이콘 (이모지 또는 이미지 파일 경로)
+    page_title="부산 은퇴자 거주지 추천 AI",
+    page_icon="app_icon.png",  # <-- 이모지 대신 GitHub의 이미지 파일명을 입력!
     layout="wide",
 )
 

@@ -5,7 +5,9 @@ from sklearn.metrics.pairwise import cosine_similarity
 import streamlit as st
 
 st.set_page_config(
-    page_title="부산 은퇴자 거주지 추천 AI 대시보드", layout="wide"
+    page_title="부산 은퇴자 거주지 추천 AI",  # 브라우저 탭 및 PWA 앱 이름
+    page_icon="🏠",  # 아이콘 (이모지 또는 이미지 파일 경로)
+    layout="wide",
 )
 
 st.sidebar.title("📌 메뉴 선택")

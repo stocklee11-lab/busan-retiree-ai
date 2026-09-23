@@ -10,6 +10,11 @@ st.set_page_config(
     layout="wide",
 )
 
+# 모바일 홈 화면 전용 아이콘 및 앱 이름 지정 메타태그
+icon_url = "https://raw.githubusercontent.com/stocklee11-lab/busan-retiree-ai/main/app_icon.png"
+meta_code = f''
+st.markdown(meta_code, unsafe_allow_html=True)
+
 st.sidebar.title("📌 메뉴 선택")
 menu = st.sidebar.radio(
     "분석 수준 선택",

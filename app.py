@@ -4,7 +4,7 @@ import pydeck as pdk
 import streamlit as st
 from sklearn.metrics.pairwise import cosine_similarity
 
-# Page configuration (사용자가 커스텀한 로고 파일 아이콘 적용)
+# Page configuration
 st.set_page_config(
     page_title="부산 은퇴자 맞춤형 AI 주거지 추천",
     page_icon="busan_logo.png",
@@ -334,7 +334,7 @@ elif menu == "구별 아파트 단지 AI 맞춤 추천":
                 use_container_width=True,
             )
 
-            # Pydeck 지도 시각화 (가장 안전한 한 줄 text 기반 툴팁)
+            # Pydeck 지도 시각화 (스페이스바 12칸 들여쓰기 & 안전한 텍스트 툴팁)
             st.subheader("🗺️ 추천 단지 지도 위치 및 인터랙티브 핀 마커")
 
             layer = pdk.Layer(
@@ -353,6 +353,7 @@ elif menu == "구별 아파트 단지 AI 맞춤 추천":
                 pitch=0,
             )
 
+            # Pydeck 지도 출력 (스페이스바 12칸 들여쓰기)
             st.pydeck_chart(
                 pdk.Deck(
                     layers=[layer],

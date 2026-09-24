@@ -56,12 +56,9 @@ if menu == "16개 구·군 광역 분석":
         # 화면에 표시할 주요 표 컬럼 정리
         df_display = df_sorted[["순위", "구이름", "실시간_종합점수", "가성비점수", "의료점수", "교통환경점수"]]
 
-        # 4. 표 출력 (부산시 16개 구·군 전체 순위)
-        st.subheader("📊 실시간 구·군 종합 순위 (16개 전체)")
-
-        # df_display 생성 시 데이터 수를 16개 전체로 유지하여 출력
+        # 4. 표 출력 (스크롤 없이 깔끔한 고정형 표)
         st.subheader("📊 실시간 구·군 종합 순위")
-        st.table(df_display)
+        st.table(df_display
 
         # 5. 구·군별 차트 출력 (터치 시 깨짐 방지 고정형 차트)
         import altair as alt

@@ -84,7 +84,7 @@ if menu == "16개 구·군 광역 분석":
 
 # 구별 아파트 단지 AI 맞춤 추천 메뉴
 elif menu == "구별 아파트 단지 AI 맞춤 추천":
-    st.title("🎯 부산시 16개 구·군 아파트 단지 AI 맞춤 추천 & 지도 시각화")
+    st.title("🏢 부산시 아파트 단지 추천 & 지도")
     st.info("선택하신 구·군의 세부 아파트 단지 추천 기능 영역입니다.")
 
     # 16개 구·군 전수 데이터베이스 (건축연도, 위도 lat, 경도 lon 포함)
@@ -420,8 +420,7 @@ elif menu == "구별 아파트 단지 AI 맞춤 추천":
             st.subheader(
                 f"💡 [{selected_gu}] 조건 맞춤 AI 추천 단지 리스트 (총 {len(df_result)}개)"
             )
-            st.dataframe(df_result, use_container_width=True)
-            st.dataframe(
+            st.table(
                 df_result[[
                     "단지명",
                     "법정동",
@@ -432,7 +431,8 @@ elif menu == "구별 아파트 단지 AI 맞춤 추천":
                     "의료접근성_점수",
                     "지하철역_거리_m",
                     "AI_유사도점수",
-                ]],
+                ]]
+            )
                 use_container_width=True,
             )
 

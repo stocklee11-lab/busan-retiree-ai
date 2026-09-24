@@ -459,13 +459,10 @@ elif menu == "구별 아파트 단지 AI 맞춤 추천":
                 pitch=0,
             )
 
-            # Pydeck 지도 출력 (가장 안전한 한 줄 text 툴팁 방식)
+            # Pydeck 지도 출력
             st.pydeck_chart(
                 pdk.Deck(
                     layers=[layer],
                     initial_view_state=view_state,
-                    tooltip={"text": "{단지명}\n매매가: {매매가_억}억 원\nAI 유사도: {AI_유사도점수}점"}
-                )
-            )
-        else:
-            st.warning("⚠️ 설정하신 조건에 해당하는 아파트 단지가 없습니다. 필터링 조건을 조정해 보세요.")
+                    tooltip={
+                        "html": "**{단지명}**

@@ -53,12 +53,17 @@ if menu == "16개 구·군 광역 분석":
         df_sorted = df.sort_values(by="실시간_종합점수", ascending=False).reset_index(drop=True)
         df_sorted["순위"] = df_sorted.index + 1
 
-        # 화면에 표시할 주요 표 컬럼 정리
-        df_display = df_sorted[["순위", "구이름", "실시간_종합점수", "가성비점수", "의료점수", "교통환경점수"]]
+        # 컬럼명을 모바일에 맞게 짧고 직관적으로 변경 + 소수점 정리
+        df_display_clean = df_sorted[["순위", "구이름", "실시간_종합점수", "가성비점수", "의료점수", "교통환경점수"]].copy()
+        df_display_clean.columns = ["순위", "구·군", "종합점수", "가성비", "의료", "교통"]
 
-        # 4. 표 출력 (스크롤 없이 깔끔한 고정형 표)
+        # 소수점 1자리로 깔끔하게 포맷팅 (2.3000 -> 2.3)
+        for col in ["종합점수", "가성비", "의료", "교통"]:
+            df_display_clean[col] = df_display_clean[col].round(1)
+
+        # 4. 표 출력 (순위 인덱스 설정 및 깔끔한 출력)
         st.subheader("📊 실시간 구·군 종합 순위")
-        st.table(df_display)
+        st.table(df_display_clean.set_index("순위"))
 
         # 5. 구·군별 차트 출력 (터치 시 깨짐 방지 고정형 차트)
         import altair as alt

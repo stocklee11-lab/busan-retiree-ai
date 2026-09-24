@@ -339,7 +339,7 @@ elif menu == "구별 아파트 단지 AI 맞춤 추천":
         # 선택한 구·군 데이터 가져오기 (if 문 내부: 스페이스바 8칸)
         gu_data = gu_database[selected_gu]
 
-        # 상세 필터링 조건
+        # 1. 상세 필터링 조건
         st.sidebar.subheader("🔍 상세 필터링 조건")
         
         user_budget = st.sidebar.number_input(
@@ -357,19 +357,6 @@ elif menu == "구별 아파트 단지 AI 맞춤 추천":
             "희망 전용면적 Range (m²)", 40, 120, (50, 100)
         )
 
-    if selected_gu in gu_database:
-        # 1. 상세 필터링 조건 (사이드바)
-        st.sidebar.subheader("🔍 상세 필터링 조건")
-        user_budget = st.sidebar.number_input(
-            "최대 보유 예산 (억 원)",
-            min_value=1.0,
-            max_value=15.0,
-            value=5.0,
-            step=0.1,
-        )
-        min_area, max_area = st.sidebar.slider(
-            "희망 전용면적 Range (m²)", 40, 120, (50, 100)
-        )
         min_year = st.sidebar.slider("최소 준공연도 (건축연한)", 1970, 2025, 1980)
 
         # 2. AI 추천 선호 가중치 (사이드바)

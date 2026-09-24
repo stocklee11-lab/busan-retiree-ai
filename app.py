@@ -60,7 +60,8 @@ if menu == "16개 구·군 광역 분석":
         st.subheader("📊 실시간 구·군 종합 순위 (16개 전체)")
 
         # df_display 생성 시 데이터 수를 16개 전체로 유지하여 출력
-        st.dataframe(df_display, use_container_width=True)
+        st.subheader("📊 실시간 구·군 종합 순위")
+        st.table(df_display)
 
         # 5. 구·군별 차트 출력 (터치 시 깨짐 방지 고정형 차트)
         import altair as alt

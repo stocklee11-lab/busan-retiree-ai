@@ -459,12 +459,12 @@ elif menu == "구별 아파트 단지 AI 맞춤 추천":
                 pitch=0,
             )
 
-            # Pydeck 지도 출력 (스페이스바 12칸 들여쓰기)
+            # Pydeck 지도 출력 (가장 안전한 한 줄 text 툴팁 방식)
             st.pydeck_chart(
                 pdk.Deck(
                     layers=[layer],
                     initial_view_state=view_state,
-                    tooltip=True
+                    tooltip={"text": "{단지명}\n매매가: {매매가_억}억 원\nAI 유사도: {AI_유사도점수}점"}
                 )
             )
         else:

@@ -353,11 +353,8 @@ elif menu == "구별 아파트 단지 AI 맞춤 추천":
         min_area, max_area = st.sidebar.slider(
             "희망 전용면적 Range (m²)", 40, 150, (50, 100), key="area_slider_unique"
         )
-        min_area, max_area = st.sidebar.slider(
-            "희망 전용면적 Range (m²)", 40, 120, (50, 100)
-        )
-
-        min_year = st.sidebar.slider("최소 준공연도 (건축연한)", 1970, 2025, 1980)
+        
+        min_year = st.sidebar.slider("최소 준공연도 (건축연한)", 1970, 2025, 1990)
 
         # 2. AI 추천 선호 가중치 (사이드바)
         st.sidebar.subheader("⚙️ AI 추천 선호 가중치")

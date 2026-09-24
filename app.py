@@ -27,22 +27,34 @@ menu = st.sidebar.radio(
 )
 
 if menu == "16개 구·군 광역 분석":
-    # 제목 간소화 (모바일 화면에 맞춰 줄바꿈 방지)
+    # 1. 제목 간소화
     st.title("🏆 최적 거주지 추천 대시보드")
     st.caption("사용자가 선호하는 가중치를 직접 조절하면 실시간으로 최적 구·군 순위가 업데이트됩니다.")
 
-    # ... 중간 가중치 계산 코드 ...
+    # 2. 사이드바 가중치 조절
+    st.sidebar.header("⚙️ 4대 인프라 가중치 조절")
+    w_price = st.sidebar.slider("부동산 가성비 (%)", 0, 100, 30)
+    w_size = st.sidebar.slider("평형 적합도 (%)", 0, 100, 20)
+    w_med = st.sidebar.slider("의료 인프라 (%)", 0, 100, 30)
+    w_trans = st.sidebar.slider("교통/환경 (%)", 0, 100, 20)
 
-    st.subheader("📊 실시간 종합 순위 Top 10")
-    # 표(Dataframe) 반응형 스크롤 고정
-    st.dataframe(df_display, use_container_width=True)
+    total = w_price + w_size + w_med + w_trans
+    total = 1 if total == 0 else total
 
-    st.subheader("📈 구·군별 종합 점수 시각화")
-    
-    # [차트 깨짐 방지] Streamlit 기본 고정형 바 차트 사용 (터치로 깨지지 않음)
-    chart_data = df_result.set_index("구이름")[["실시간_종합점수"]]
-    st.bar_chart(chart_data, use_container_width=True)
+    # 3. 데이터 계산 (기존 try 문 이하 연산 코드 위치)
+    try:
+        # ... (기존 df_result 및 df_display 계산 로직) ...
+        
+        # 4. 표 및 차트 출력 (계산 완료 후 최하단에 배치)
+        st.subheader("📊 실시간 종합 순위 Top 10")
+        st.dataframe(df_display, use_container_width=True)
 
+        st.subheader("📈 구·군별 종합 점수 시각화")
+        chart_data = df_result.set_index("구이름")[["실시간_종합점수"]]
+        st.bar_chart(chart_data, use_container_width=True)
+
+    except Exception as e:
+        st.error(f"데이터를 처리하는 중 오류가 발생했습니다: {e}")
 
     st.sidebar.header("⚙️ 4대 인프라 가중치 조절")
     w_price = st.sidebar.slider("부동산 가성비 (%)", 0, 100, 30)

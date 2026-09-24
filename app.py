@@ -6,18 +6,21 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 # 1. 페이지 기본 설정
 st.set_page_config(
-    page_title="부산 은퇴자 거주지 추천 AI",
+    page_title="최적 거주지 추천 대시보드",
     page_icon="app_icon.png",
     layout="wide",
 )
 
-# 2. 모바일 여백 최적화 CSS (상단 쓸데없는 공간 제거)
+# 모바일 화면 상단 여백 줄이기 및 제목 크기 모바일 최적화 CSS
 st.markdown(
     """
     
-    """,
+""",
     unsafe_allow_html=True,
 )
+
+# 제목 변경
+st.title("🏆 최적 거주지 추천 대시보드")
 
 # ... 기존 메뉴 선택 코드 ...
 st.sidebar.title("📌 메뉴 선택")

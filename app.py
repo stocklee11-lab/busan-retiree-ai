@@ -27,7 +27,7 @@ menu = st.sidebar.radio(
 )
 
 if menu == "16개 구·군 광역 분석":
-    # 1. 제목 간소화
+    # 1. 제목 간소화 (모바일 줄바꿈 방지)
     st.title("🏆 최적 거주지 추천 대시보드")
     st.caption("사용자가 선호하는 가중치를 직접 조절하면 실시간으로 최적 구·군 순위가 업데이트됩니다.")
 
@@ -41,83 +41,52 @@ if menu == "16개 구·군 광역 분석":
     total = w_price + w_size + w_med + w_trans
     total = 1 if total == 0 else total
 
-    # 3. 데이터 계산 (기존 try 문 이하 연산 코드 위치)
     try:
-        # ... (기존 df_result 및 df_display 계산 로직) ...
+        # 3. 데이터 불러오기 및 실시간 종합점수 연산
+        df = pd.read_csv("busan_retiree_recommendation_advanced.csv")
         
-        # 4. 표 및 차트 출력 (계산 완료 후 최하단에 배치)
+        df["실시간_종합점수"] = (
+            df["가성비점수"] * (w_price / total)
+            + df["평형적합도점수"] * (w_size / total)
+            + df["의료점수"] * (w_med / total)
+            + df["교통환경점수"] * (w_trans / total)
+        ).round(1)
+
+        df_sorted = df.sort_values(by="실시간_종합점수", ascending=False).reset_index(drop=True)
+        df_sorted["순위"] = df_sorted.index + 1
+
+        # 화면에 표시할 주요 표 컬럼 정리
+        df_display = df_sorted[["순위", "구이름", "실시간_종합점수", "가성비점수", "의료점수", "교통환경점수"]]
+
+        # 4. 표 출력 (모바일 너비 고정)
         st.subheader("📊 실시간 종합 순위 Top 10")
         st.dataframe(df_display, use_container_width=True)
 
+        # 5. 구·군별 차트 출력 (터치 시 깨짐 방지 고정형 차트)
         st.subheader("📈 구·군별 종합 점수 시각화")
-        chart_data = df_result.set_index("구이름")[["실시간_종합점수"]]
+        chart_data = df_sorted.set_index("구이름")[["실시간_종합점수"]]
         st.bar_chart(chart_data, use_container_width=True)
 
     except Exception as e:
         st.error(f"데이터를 처리하는 중 오류가 발생했습니다: {e}")
 
-    st.sidebar.header("⚙️ 4대 인프라 가중치 조절")
-    w_price = st.sidebar.slider("부동산 가성비 (%)", 0, 100, 30)
-    w_size = st.sidebar.slider("평형 적합도 (%)", 0, 100, 20)
-    w_med = st.sidebar.slider("의료 인프라 (%)", 0, 100, 30)
-    w_trans = st.sidebar.slider("교통/환경 (%)", 0, 100, 20)
+# 구별 아파트 단지 AI 맞춤 추천 메뉴
+elif menu == "구별 아파트 단지 AI 맞춤 추천":
+    st.title("🎯 부산시 16개 구·군 아파트 단지 AI 맞춤 추천 & 지도 시각화")
+    st.info("선택하신 구·군의 세부 아파트 단지 추천 기능 영역입니다.")
 
-    total = w_price + w_size + w_med + w_trans
-    total = 1 if total == 0 else total
-
-    try:
-    df = pd.read_csv("busan_retiree_recommendation_advanced.csv")
-    df["실시간_종합점수"] = (
-        df["가성비점수"] * (w_price / total)
-        + df["평형적합도점수"] * (w_size / total)
-        + df["의료점수"] * (w_med / total)
-        + df["교통환경점수"] * (w_trans / total)
-    ).round(1)
-
-    df_sorted = df.sort_values(by="실시간_종합점수", ascending=False).reset_index(
-        drop=True
-    )
-    df_sorted["순위"] = df_sorted.index + 1
-
-    col1, col2 = st.columns([6, 4])
-    with col1:
-      st.subheader("📊 실시간 종합 순위 Top 10")
-      st.dataframe(
-          df_sorted[[
-              "순위",
-              "구이름",
-              "실시간_종합점수",
-              "가성비점수",
-              "의료점수",
-              "교통점수",
-              "환경점수",
-          ]].head(10),
-          use_container_width=True,
-      )
-    with col2:
-      st.subheader("📈 구·군별 종합 점수 시각화")
-      st.bar_chart(df_sorted.set_index("구이름")["실시간_종합점수"])
-  except Exception as e:
-    st.error("데이터 파일(busan_retiree_recommendation_advanced.csv) 로딩 실패.")
-
-# -------------------------------------------------------------------
-# 2. 구별 아파트 단지 AI 맞춤 추천 (16개 구·군 전수 데이터베이스)
-# -------------------------------------------------------------------
-else:
-  st.title("🎯 부산시 16개 구·군 아파트 단지 AI 맞춤 추천 & 지도 시각화")
-
-  # 16개 구·군 전수 데이터베이스 (건축연도, 위도 lat, 경도 lon 포함)
-  gu_database = {
-      "부산진구": {
-          "단지명": [
-              "개금동 반도보라",
-              "전포동 대동파크",
-              "부암동 화승삼성",
-              "가야동 가야벽산",
-              "양정동 현대아파트",
-              "당감동 백양순환",
-          ],
-          "법정동": ["개금동", "전포동", "부암동", "가야동", "양정동", "당감동"],
+    # 16개 구·군 전수 데이터베이스 (건축연도, 위도 lat, 경도 lon 포함)
+    gu_database = {
+        "부산진구": {
+            "단지명": [
+                "개금동 반도보라",
+                "전포동 대동파크",
+                "부암동 화승삼성",
+                "가야동 가야벽산",
+                "양정동 현대아파트",
+                "당감동 백양순환",
+            ],
+            "법정동": ["개금동", "전포동", "부암동", "가야동", "양정동", "당감동"],
           "매매가_억": [2.3, 2.8, 3.1, 2.1, 2.7, 1.8],
           "전용면적_m2": [84.9, 75.2, 84.8, 84.6, 79.8, 59.9],
           "건축연도": [1999, 1997, 1997, 1996, 1998, 1995],

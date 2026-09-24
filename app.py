@@ -465,5 +465,4 @@ elif menu == "구별 아파트 단지 AI 맞춤 추천":
                     layers=[layer],
                     initial_view_state=view_state,
                     tooltip={
-                        "html": """
-                        **{단지명}**
+                        "html": "**{단지명}**

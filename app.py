@@ -403,75 +403,65 @@ elif menu == "구별 아파트 단지 AI 맞춤 추천":
                 (max_price - df_filtered["매매가_억"]) / (max_price - min_price) * 100
             )
             df_filtered["의료_vector"] = df_filtered["의료접근성_점수"]
-      df_filtered["교통_vector"] = (
-          (1500 - df_filtered["지하철역_거리_m"]) / (1500 - 100) * 100
-      )
+            df_filtered["교통_vector"] = (
+                (1500 - df_filtered["지하철역_거리_m"]) / (1500 - 100) * 100
+            )
 
-      X_filtered = df_filtered[
-          ["가성비_vector", "의료_vector", "교통_vector"]
-      ].values
-      user_vec = np.array(
-          [w_c_price * 20, w_c_med * 20, w_c_trans * 20]
-      ).reshape(1, -1)
+            X_filtered = df_filtered[
+                ["가성비_vector", "의료_vector", "교통_vector"]
+            ].values
 
-      sims = cosine_similarity(user_vec, X_filtered)[0]
-      df_filtered["AI_유사도점수"] = (sims * 100).round(1)
-      df_result = df_filtered.sort_values(
-          by="AI_유사도점수", ascending=False
-      )
+            user_vec = np.array(
+                [w_c_price * 20, w_c_med * 20, w_c_trans * 20]
+            ).reshape(1, -1)
 
-      st.subheader(
-          f"💡 [{selected_gu}] 조건 맞춤 AI 추천 단지 리스트 (총"
-          f" {len(df_result)}개)"
-      )
-      st.dataframe(
-          df_result[[
-              "단지명",
-              "법정동",
-              "매매가_억",
-              "평당가격_만원",
-              "전용면적_m2",
-              "건축연도",
-              "의료접근성_점수",
-              "지하철역_거리_m",
-              "AI_유사도점수",
-          ]],
-          use_container_width=True,
-      )
+            sims = cosine_similarity(user_vec, X_filtered)[0]
+            df_filtered["AI_유사도점수"] = (sims * 100).round(1)
+            df_result = df_filtered.sort_values(
+                by="AI_유사도점수", ascending=False
+            )
 
-      # Pydeck 활용 지도 시각화
-      st.subheader("🗺️ 추천 단지 지도 위치 및 인터랙티브 핀 마커")
+            st.subheader(
+                f"💡 [{selected_gu}] 조건 맞춤 AI 추천 단지 리스트 (총 {len(df_result)}개)"
+            )
+            st.dataframe(df_result, use_container_width=True)
+            st.dataframe(
+                df_result[[
+                    "단지명",
+                    "법정동",
+                    "매매가_억",
+                    "평당가격_만원",
+                    "전용면적_m2",
+                    "건축연도",
+                    "의료접근성_점수",
+                    "지하철역_거리_m",
+                    "AI_유사도점수",
+                ]],
+                use_container_width=True,
+            )
 
-      layer = pdk.Layer(
-          "ScatterplotLayer",
-          df_result,
-          get_position=["lon", "lat"],
-          get_color=[255, 75, 75, 200],
-          get_radius=150,
-          pickable=True,
-      )
+            # Pydeck 활용 지도 시각화 (스페이스바 12칸)
+            st.subheader("🗺️ 추천 단지 지도 위치 및 인터랙티브 핀 마커")
 
-      view_state = pdk.ViewState(
-          latitude=df_result["lat"].mean(),
-          longitude=df_result["lon"].mean(),
-          zoom=12,
-          pitch=30,
-      )
+            layer = pdk.Layer(
+                "ScatterplotLayer",
+                df_result,
+                get_position=["lon", "lat"],
+                get_color=[255, 75, 75, 200],
+                get_radius=150,
+                pickable=True,
+            )
 
-      r = pdk.Deck(
-          layers=[layer],
-          initial_view_state=view_state,
-          tooltip={
-              "text": (
-                  "🏢 단지명: {단지명}\n💰 매매가: {매매가_억}억\n🏥 의료점수:"
-                  " {의료접근성_점수}점\n🚇 지하철: {지하철역_거리_m}m"
-              )
-          },
-      )
-      st.pydeck_chart(r)
+            view_state = pdk.ViewState(
+                latitude=df_result["lat"].mean(),
+                longitude=df_result["lon"].mean(),
+                zoom=12,
+                pitch=0,
+            )
 
-    else:
-      st.warning(
-          "설정하신 필터링 조건(예산, 평형, 준공연도)에 해당하는 아파트 단지가"
-          " 없습니다. 사이드바 필터를 변경해 보세요."
-      )
+            st.pydeck_chart(
+                pdk.Deck(
+                    layers=[layer],
+                    initial_view_state=view_state,
+                    tooltip={
+                        "html": "**{단지명}**

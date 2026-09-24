@@ -327,16 +327,30 @@ elif menu == "구별 아파트 단지 AI 맞춤 추천":
           "lat": [35.0710, 35.0880, 35.0950],
           "lon": [129.0680, 129.0550, 129.0410],
         },
-    }
+    }  # gu_database 딕셔너리 종료 (스페이스바 4칸 위치)
 
-    # [수정 포인트] 맨 앞에 스페이스바 4칸(Tab 1번) 들여쓰기 추가
+    # 구 선택 셀렉트박스 (스페이스바 4칸)
     selected_gu = st.selectbox(
         "분석할 구·군을 선택하세요", 
         list(gu_database.keys())
     )
 
-    # 선택한 구·군 데이터 가져오기
-    gu_data = gu_database[selected_gu]
+    if selected_gu in gu_database:
+        # 선택한 구·군 데이터 가져오기 (if 문 내부 8칸 들여쓰기)
+        gu_data = gu_database[selected_gu]
+
+        # 상세 필터링 조건
+        st.sidebar.subheader("🔍 상세 필터링 조건")
+        user_budget = st.sidebar.number_input(
+            "최대 보유 예산 (억 원)",
+            min_value=1.0,
+            max_value=15.0,
+            value=5.0,
+            step=0.1,
+        )
+        min_area, max_area = st.sidebar.slider(
+            "희망 전용면적 Range (m²)", 40, 120, (50, 100)
+        )
 
     if selected_gu in gu_database:
     # 상세 필터링 조건

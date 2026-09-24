@@ -1,35 +1,48 @@
-import numpy as np
+import streamlit as st
 import pandas as pd
+import numpy as np
 import pydeck as pdk
 from sklearn.metrics.pairwise import cosine_similarity
-import streamlit as st
 
-# st.set_page_config는 반드시 최상단(다른 st 명령어가 나오기 전)에 위치해야 합니다.
+# 1. 페이지 기본 설정
 st.set_page_config(
     page_title="부산 은퇴자 거주지 추천 AI",
-    page_icon="app_icon.png",  # <-- 이모지 대신 GitHub의 이미지 파일명을 입력!
+    page_icon="app_icon.png",
     layout="wide",
 )
 
-# 모바일 홈 화면 전용 아이콘 및 앱 이름 지정 메타태그
-icon_url = "https://cdn-icons-png.flaticon.com/512/619/619032.png" # 고화질 집 모양 아이콘
-st.markdown(f'', unsafe_allow_html=True)
+# 2. 모바일 여백 최적화 CSS (상단 쓸데없는 공간 제거)
+st.markdown(
+    """
+    
+    """,
+    unsafe_allow_html=True,
+)
 
+# ... 기존 메뉴 선택 코드 ...
 st.sidebar.title("📌 메뉴 선택")
 menu = st.sidebar.radio(
     "분석 수준 선택",
     ["16개 구·군 광역 분석", "구별 아파트 단지 AI 맞춤 추천"],
 )
 
-# -------------------------------------------------------------------
-# 1. 16개 구·군 광역 분석
-# -------------------------------------------------------------------
 if menu == "16개 구·군 광역 분석":
-  st.title("🏆 부산광역시 16개 구·군 은퇴자 최적 거주지 추천 대시보드")
-  st.markdown(
-      "사용자가 선호하는 가중치를 직접 조절하면 실시간으로 최적 구·군"
-      " 순위가 업데이트됩니다."
-  )
+    # 제목 간소화 (모바일 화면에 맞춰 줄바꿈 방지)
+    st.title("🏆 최적 거주지 추천 대시보드")
+    st.caption("사용자가 선호하는 가중치를 직접 조절하면 실시간으로 최적 구·군 순위가 업데이트됩니다.")
+
+    # ... 중간 가중치 계산 코드 ...
+
+    st.subheader("📊 실시간 종합 순위 Top 10")
+    # 표(Dataframe) 반응형 스크롤 고정
+    st.dataframe(df_display, use_container_width=True)
+
+    st.subheader("📈 구·군별 종합 점수 시각화")
+    
+    # [차트 깨짐 방지] Streamlit 기본 고정형 바 차트 사용 (터치로 깨지지 않음)
+    chart_data = df_result.set_index("구이름")[["실시간_종합점수"]]
+    st.bar_chart(chart_data, use_container_width=True)
+
 
   st.sidebar.header("⚙️ 4대 인프라 가중치 조절")
   w_price = st.sidebar.slider("부동산 가성비 (%)", 0, 100, 30)

@@ -19,9 +19,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# 제목 변경
-st.title("🏆 최적 거주지 추천 대시보드")
-
 # ... 기존 메뉴 선택 코드 ...
 st.sidebar.title("📌 메뉴 선택")
 menu = st.sidebar.radio(

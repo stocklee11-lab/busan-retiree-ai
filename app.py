@@ -44,16 +44,16 @@ if menu == "16개 구·군 광역 분석":
     st.bar_chart(chart_data, use_container_width=True)
 
 
-  st.sidebar.header("⚙️ 4대 인프라 가중치 조절")
-  w_price = st.sidebar.slider("부동산 가성비 (%)", 0, 100, 30)
-  w_size = st.sidebar.slider("평형 적합도 (%)", 0, 100, 20)
-  w_med = st.sidebar.slider("의료 인프라 (%)", 0, 100, 30)
-  w_trans = st.sidebar.slider("교통/환경 (%)", 0, 100, 20)
+    st.sidebar.header("⚙️ 4대 인프라 가중치 조절")
+    w_price = st.sidebar.slider("부동산 가성비 (%)", 0, 100, 30)
+    w_size = st.sidebar.slider("평형 적합도 (%)", 0, 100, 20)
+    w_med = st.sidebar.slider("의료 인프라 (%)", 0, 100, 30)
+    w_trans = st.sidebar.slider("교통/환경 (%)", 0, 100, 20)
 
-  total = w_price + w_size + w_med + w_trans
-  total = 1 if total == 0 else total
+    total = w_price + w_size + w_med + w_trans
+    total = 1 if total == 0 else total
 
-  try:
+    try:
     df = pd.read_csv("busan_retiree_recommendation_advanced.csv")
     df["실시간_종합점수"] = (
         df["가성비점수"] * (w_price / total)

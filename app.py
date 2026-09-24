@@ -11,13 +11,9 @@ st.set_page_config(
     layout="wide",
 )
 
-# 모바일 화면 상단 여백 줄이기 및 제목 크기 모바일 최적화 CSS
-st.markdown(
-    """
-    
-""",
-    unsafe_allow_html=True,
-)
+# 모바일 상단 여백 제거 CSS (문자열 변수로 에디터 숨김 방지)
+css_code = ''
+st.markdown(css_code, unsafe_allow_html=True)
 
 # ... 기존 메뉴 선택 코드 ...
 st.sidebar.title("📌 메뉴 선택")

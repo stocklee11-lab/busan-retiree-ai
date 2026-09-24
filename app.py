@@ -58,7 +58,7 @@ if menu == "16개 구·군 광역 분석":
 
         # 4. 표 출력 (스크롤 없이 깔끔한 고정형 표)
         st.subheader("📊 실시간 구·군 종합 순위")
-        st.table(df_display
+        st.table(df_display)
 
         # 5. 구·군별 차트 출력 (터치 시 깨짐 방지 고정형 차트)
         import altair as alt

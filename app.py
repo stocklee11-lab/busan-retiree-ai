@@ -459,6 +459,7 @@ elif menu == "구별 아파트 단지 AI 맞춤 추천":
                 pitch=0,
             )
 
+            # Pydeck 지도 출력 (스페이스바 12칸 들여쓰기)
             st.pydeck_chart(
                 pdk.Deck(
                     layers=[layer],

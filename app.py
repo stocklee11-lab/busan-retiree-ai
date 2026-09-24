@@ -464,5 +464,8 @@ elif menu == "구별 아파트 단지 AI 맞춤 추천":
                 pdk.Deck(
                     layers=[layer],
                     initial_view_state=view_state,
-                    tooltip={
-                        "html": **{단지명}**
+                    tooltip=True
+                )
+            )
+        else:
+            st.warning("⚠️ 설정하신 조건에 해당하는 아파트 단지가 없습니다. 필터링 조건을 조정해 보세요.")

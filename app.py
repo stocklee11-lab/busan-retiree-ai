@@ -61,9 +61,23 @@ if menu == "16개 구·군 광역 분석":
         st.dataframe(df_display, use_container_width=True)
 
         # 5. 구·군별 차트 출력 (터치 시 깨짐 방지 고정형 차트)
+        import altair as alt
+
         st.subheader("📈 구·군별 종합 점수 시각화")
-        chart_data = df_sorted.set_index("구이름")[["실시간_종합점수"]]
-        st.bar_chart(chart_data, use_container_width=True)
+
+        # 터치 드래그/확대(interactive)를 적용하지 않는 고정 막대그래프 생성
+        chart = (
+            alt.Chart(df_sorted)
+            .mark_bar(color="#2962FF")
+            .encode(
+                x=alt.X("구이름:N", sort=None, title="구·군"),
+                y=alt.Y("실시간_종합점수:Q", title="종합점수"),
+                tooltip=["구이름", "실시간_종합점수"],
+            )
+            .properties(height=300)
+        )
+
+        st.altair_chart(chart, use_container_width=True)
 
     except Exception as e:
         st.error(f"데이터를 처리하는 중 오류가 발생했습니다: {e}")

@@ -358,46 +358,51 @@ elif menu == "구별 아파트 단지 AI 맞춤 추천":
         )
 
     if selected_gu in gu_database:
-    # 상세 필터링 조건
-    st.sidebar.subheader("🔍 상세 필터링 조건")
-    user_budget = st.sidebar.number_input(
-        "최대 보유 예산 (억 원)",
-        min_value=1.0,
-        max_value=15.0,
-        value=5.0,
-        step=0.1,
-    )
-    min_area, max_area = st.sidebar.slider(
-        "희망 전용면적 Range (㎡)", 40, 120, (50, 100)
-    )
-    min_year = st.sidebar.slider("최소 준공연도 (건축연한)", 1970, 2025, 1980)
+        # 1. 상세 필터링 조건 (사이드바)
+        st.sidebar.subheader("🔍 상세 필터링 조건")
+        user_budget = st.sidebar.number_input(
+            "최대 보유 예산 (억 원)",
+            min_value=1.0,
+            max_value=15.0,
+            value=5.0,
+            step=0.1,
+        )
+        min_area, max_area = st.sidebar.slider(
+            "희망 전용면적 Range (m²)", 40, 120, (50, 100)
+        )
+        min_year = st.sidebar.slider("최소 준공연도 (건축연한)", 1970, 2025, 1980)
 
-    st.sidebar.subheader("⚙️ AI 추천 선호 가중치")
-    w_c_price = st.sidebar.slider("가성비 중요도", 1, 5, 4)
-    w_c_med = st.sidebar.slider("의료 접근성 중요도", 1, 5, 4)
-    w_c_trans = st.sidebar.slider("교통 역세권 중요도", 1, 5, 3)
+        # 2. AI 추천 선호 가중치 (사이드바)
+        st.sidebar.subheader("⚙️ AI 추천 선호 가중치")
+        w_c_price = st.sidebar.slider("가성비 중요도", 1, 5, 4)
+        w_c_med = st.sidebar.slider("의료 접근성 중요도", 1, 5, 4)
+        w_c_trans = st.sidebar.slider("교통 역세권 중요도", 1, 5, 3)
 
-    df_c = pd.DataFrame(gu_database[selected_gu])
-    df_c["공급평형"] = (df_c["전용면적_m2"] / 3.3058 * 1.3).round(1)
-    df_c["평당가격_만원"] = (
-        (df_c["매매가_억"] * 10000) / df_c["공급평형"]
-    ).round(0)
+        # 3. 데이터 연산 및 데이터프레임 생성 (스페이스바 8칸)
+        df_c = pd.DataFrame(gu_database[selected_gu])
+        df_c["공급평형"] = (df_c["전용면적_m2"] / 3.3058 * 1.3).round(1)
 
-    # 조건별 필터링
-    df_filtered = df_c[
-        (df_c["매매가_억"] <= user_budget)
-        & (df_c["전용면적_m2"] >= min_area)
-        & (df_c["전용면적_m2"] <= max_area)
-        & (df_c["건축연도"] >= min_year)
-    ].reset_index(drop=True)
+        df_c["평당가격_만원"] = (
+            (df_c["매매가_억"] * 10000) / df_c["공급평형"]
+        ).round(0)
 
-    if len(df_filtered) > 0:
-      max_price = max(6.0, df_c["매매가_억"].max() + 0.5)
-      min_price = max(0.5, df_c["매매가_억"].min() - 0.5)
-      df_filtered["가성비_vector"] = (
-          (max_price - df_filtered["매매가_억"]) / (max_price - min_price) * 100
-      )
-      df_filtered["의료_vector"] = df_filtered["의료접근성_점수"]
+        # 조건별 필터링 (스페이스바 8칸)
+        df_filtered = df_c[
+            (df_c["매매가_억"] <= user_budget)
+            & (df_c["전용면적_m2"] >= min_area)
+            & (df_c["전용면적_m2"] <= max_area)
+            & (df_c["건축연도"] >= min_year)
+        ].reset_index(drop=True)
+
+        # 필터링 결과가 존재할 경우 (스페이스바 8칸)
+        if len(df_filtered) > 0:
+            # 아래 코드는 모두 스페이스바 12칸 들여쓰기
+            max_price = max(6.0, df_c["매매가_억"].max() + 0.5)
+            min_price = max(0.5, df_c["매매가_억"].min() - 0.5)
+            df_filtered["가성비_vector"] = (
+                (max_price - df_filtered["매매가_억"]) / (max_price - min_price) * 100
+            )
+            df_filtered["의료_vector"] = df_filtered["의료접근성_점수"]
       df_filtered["교통_vector"] = (
           (1500 - df_filtered["지하철역_거리_m"]) / (1500 - 100) * 100
       )

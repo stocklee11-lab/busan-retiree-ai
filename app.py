@@ -17,7 +17,21 @@ app_icon_url = "https://raw.githubusercontent.com/stocklee11-lab/busan-retiree-a
 
 # 모바일 최적화 상단 여백 제거 및 아이콘 설정 (한 줄 통합으로 코드 소실 방지)
 icon_url = "https://raw.githubusercontent.com/stocklee11-lab/busan-retiree-ai/main/app_icon.png"
-css_and_icon_code = f''
+css_and_icon_code = f"""
+<head>
+<link rel="apple-touch-icon" href="{icon_url}">
+</head>
+<style>
+/* 상단 기본 여백 제거 */
+.block-container {{
+padding-top: 1rem !important;
+padding-bottom: 0rem !important;
+}}
+/* 상단 헤더 숨기기 또는 여백 줄이기 */
+header[data-testid="stHeader"] {{
+background-color: transparent !important;
+}}
+</style>"""
 st.markdown(css_and_icon_code, unsafe_allow_html=True)
 
 # ... 기존 메뉴 선택 코드 ...

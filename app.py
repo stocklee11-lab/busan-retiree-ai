@@ -7,10 +7,21 @@ from sklearn.metrics.pairwise import cosine_similarity
 # 1. 페이지 기본 설정
 st.set_page_config(
     page_title="최적 거주지 추천 대시보드",
-    page_icon="app_icon.png",
+    page_icon="app_icon.png",  # 브라우저 탭 아이콘 (파비콘)
     layout="wide",
 )
 
+# 2. 모바일 홈 화면 설치 전용 아이콘(apple-touch-icon) 및 상단 여백 제거 CSS
+# (GitHub 레포지토리에 저장된 app_icon.png 파일 경로 연결)
+app_icon_url = "https://raw.githubusercontent.com/stocklee11-lab/busan-retiree-ai/main/app_icon.png"
+
+css_and_icon_code = f"""
+
+
+
+"""
+
+st.markdown(css_and_icon_code, unsafe_allow_html=True)
 # 모바일 최적화 상단 여백 완벽 제거 CSS
 css_code = """
 

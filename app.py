@@ -19,7 +19,8 @@ app_icon_url = "https://raw.githubusercontent.com/stocklee11-lab/busan-retiree-a
 icon_url = "https://raw.githubusercontent.com/stocklee11-lab/busan-retiree-ai/main/app_icon.png"
 css_and_icon_code = f"""
 <head>
-<link rel="apple-touch-icon" href="{icon_url}">
+<link rel="apple-touch-icon" sizes="180x180" href="{icon_url}">
+<link rel="icon" type="image/png" href="{icon_url}">
 </head>
 <style>
 /* 상단 기본 여백 제거 */
@@ -27,11 +28,14 @@ css_and_icon_code = f"""
 padding-top: 1rem !important;
 padding-bottom: 0rem !important;
 }}
-/* 상단 헤더 숨기기 또는 여백 줄이기 */
+/* Streamlit 오른쪽 상단 기본 우측 메뉴(왕관/메뉴 아이콘) 및 헤더 숨기기 */
+#MainMenu {{ visibility: hidden; }}
 header[data-testid="stHeader"] {{
 background-color: transparent !important;
 }}
-</style>"""
+</style>
+"""
+
 st.markdown(css_and_icon_code, unsafe_allow_html=True)
 
 # ... 기존 메뉴 선택 코드 ...

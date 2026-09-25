@@ -13,7 +13,6 @@ st.set_page_config(
 
 # 2. 모바일 홈 화면 설치 전용 아이콘(apple-touch-icon) 및 상단 여백 제거 CSS
 # (GitHub 레포지토리에 저장된 app_icon.png 파일 경로 연결)
-app_icon_url = "https://raw.githubusercontent.com/stocklee11-lab/busan-retiree-ai/main/app_icon.png"
 
 # 모바일 최적화 상단 여백 제거 및 아이콘 설정 (한 줄 통합으로 코드 소실 방지)
 icon_url = "https://raw.githubusercontent.com/stocklee11-lab/busan-retiree-ai/main/app_icon.png"

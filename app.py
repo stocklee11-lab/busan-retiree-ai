@@ -15,18 +15,10 @@ st.set_page_config(
 # (GitHub 레포지토리에 저장된 app_icon.png 파일 경로 연결)
 app_icon_url = "https://raw.githubusercontent.com/stocklee11-lab/busan-retiree-ai/main/app_icon.png"
 
-css_and_icon_code = f"""
-
-
-
-"""
-
+# 모바일 최적화 상단 여백 제거 및 아이콘 설정 (한 줄 통합으로 코드 소실 방지)
+icon_url = "https://raw.githubusercontent.com/stocklee11-lab/busan-retiree-ai/main/app_icon.png"
+css_and_icon_code = f''
 st.markdown(css_and_icon_code, unsafe_allow_html=True)
-# 모바일 최적화 상단 여백 완벽 제거 CSS
-css_code = """
-
-"""
-st.markdown(css_code, unsafe_allow_html=True)
 
 # ... 기존 메뉴 선택 코드 ...
 st.sidebar.title("📌 메뉴 선택")

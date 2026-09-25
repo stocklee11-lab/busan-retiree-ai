@@ -426,21 +426,22 @@ elif menu == "구별 아파트 단지 AI 맞춤 추천":
                 f"💡 [{selected_gu}] 조건 맞춤 AI 추천 단지 리스트 (총 {len(df_result)}개)"
             )
 
-            # st.table 사용으로 들여쓰기 오류 방지 및 스크롤 없는 고정 표 출력
-            st.table(
-                df_result[[
+            # 모바일 화면에 맞춰 핵심 컬럼만 선택 및 컬럼명 짧게 변경
+            df_result_clean = df_result[[
                 "단지명",
                 "법정동",
                 "매매가_억",
-                "평당가격_만원",
                 "전용면적_m2",
                 "건축연도",
-                "의료접근성_점수",
-                "지하철역_거리_m",
-                "AI_유사도점수",
-               ]]
-            )
-                
+                "AI_유사도점수"
+            ]].copy()
+
+            df_result_clean.columns = ["단지명", "법정동", "매매가(억)", "전용(m²)", "준공", "AI점수"]
+            df_result_clean["AI점수"] = df_result_clean["AI점수"].round(1)
+
+            # 인덱스(단지명) 기준으 깔끔하게 표1회만 출력
+            st.table(df_result_clean.set_index("단지명"))
+                            
             # Pydeck 활용 지도 시각화 (스페이스바 12칸)
             st.subheader("🗺️ 추천 단지 지도 위치 및 인터랙티브 핀 마커")
 

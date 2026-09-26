@@ -17,6 +17,7 @@ st.set_page_config(
 icon_url = "https://raw.githubusercontent.com/stocklee11-lab/busan-retiree-ai/main/app_icon.png"
 css_and_icon_code = f"""
 <head>
+<link rel="manifest" href="data:application/json;charset=utf-8,{manifest_json}">
 <link rel="apple-touch-icon" sizes="180x180" href="{icon_url}">
 <link rel="icon" type="image/png" href="{icon_url}">
 </head>

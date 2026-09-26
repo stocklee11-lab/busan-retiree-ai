@@ -15,7 +15,7 @@ st.set_page_config(
 
 # 모바일 최적화 상단 여백 제거 및 아이콘 설정 (한 줄 통합으로 코드 소실 방지)
 icon_url = "https://raw.githubusercontent.com/stocklee11-lab/busan-retiree-ai/main/app_icon.png"
-PWA 매니페스트 설정 변수 정의 (NameError 해결)
+# PWA 매니페스트 설정 변수 정의 (NameError 해결)
 manifest_json = f"""{{
 "name": "Residence-Selection",
 "short_name": "Residence-Selection",

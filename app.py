@@ -40,7 +40,7 @@ css_and_icon_code = f"""
 <link rel="apple-touch-icon" sizes="180x180" href="{icon_url}">
 <link rel="icon" type="image/png" href="{icon_url}">
 </head>
-(style)
+<style>
 .block-container {{
 padding-top: 1rem !important;
 padding-bottom: 0rem !important;

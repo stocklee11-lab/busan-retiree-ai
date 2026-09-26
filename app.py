@@ -15,29 +15,41 @@ st.set_page_config(
 # 2. 모바일 홈 화면 설치 전용 아이콘(apple-touch-icon) 및 상단 여백 제거 CSS
 # (GitHub 레포지토리에 저장된 app_icon.png 파일 경로 연결)
 
-# 모바일 최적화 상단 여백 제거 및 아이콘 설정 (한 줄 통합으로 코드 소실 방지)
+# 2. 모바일 앱 이름 및 아이콘 설정 PWA
 icon_url = "https://raw.githubusercontent.com/stocklee11-lab/busan-retiree-ai/main/app_icon.png"
 
-manifest_data = {
-"name": "Residence-Selection",
-"short_name": "Residence-Selection",
-"start_url": ".",
-"display": "standalone",
-"background_color": "#ffffff",
-"theme_color": "#ffffff",
-"icons": [
-{"src": icon_url, "sizes": "192x192", "type": "image/png"},
-{"src": icon_url, "sizes": "512x512", "type": "image/png"}
-]
-}
-manifest_json_str = urllib.parse.quote(json.dumps(manifest_data))
+# 읽기 쉬운 일반 텍스트 형태의 매니페스트 설정
+raw_manifest = """{
+  "name": "Residence-Selection",
+  "short_name": "Residence-Selection",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "ICON_URL_PLACEHOLDER",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "ICON_URL_PLACEHOLDER",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}""".replace("ICON_URL_PLACEHOLDER", icon_url)
+
+# URL 인코딩 처리
+import urllib.parse
+manifest_data_url = "data:application/json;charset=utf-8," + urllib.parse.quote(raw_manifest)
 
 css_and_icon_code = f"""
-(head)
-(link rel="manifest" href="data:application/json;charset=utf-8,{manifest_json_str}")
-(link rel="apple-touch-icon" sizes="180x180" href="{icon_url}")
-(link rel="icon" type="image/png" href="{icon_url}")
-(/head)
+<head>
+<link rel="manifest" href="data:application/json;charset=utf-8,{manifest_json_str}">
+<link rel="apple-touch-icon" sizes="180x180" href="{icon_url}">
+<link rel="icon" type="image/png" href="{icon_url}">
+</head>
 (style)
 .block-container {{
 padding-top: 1rem !important;
@@ -47,30 +59,8 @@ padding-bottom: 0rem !important;
 header[data-testid="stHeader"] {{
 background-color: transparent !important;
 }}
-(/style)
-"""
-
-st.markdown(css_and_icon_code, unsafe_allow_html=True)
-
-css_and_icon_code = f"""
-<head>
-<link rel="manifest" href="data:application/json;charset=utf-8,{manifest_json}">
-<link rel="apple-touch-icon" sizes="180x180" href="{icon_url}">
-<link rel="icon" type="image/png" href="{icon_url}">
-</head>
-<style>
-/* 상단 기본 여백 제거 */
-.block-container {{
-padding-top: 1rem !important;
-padding-bottom: 0rem !important;
-}}
-/* Streamlit 오른쪽 상단 기본 우측 메뉴(왕관/메뉴 아이콘) 및 헤더 숨기기 */
-#MainMenu {{ visibility: hidden; }}
-header[data-testid="stHeader"] {{
-background-color: transparent !important;
-}}
 </style>
-"""
+""".replace("MANIFEST_PLACEHOLDER", manifest_data_url).replace("ICON_URL_PLACEHOLDER", icon_url)
 
 st.markdown(css_and_icon_code, unsafe_allow_html=True)
 

@@ -38,8 +38,7 @@ raw_manifest = """{
   ]
 }""".replace("ICON_URL_PLACEHOLDER", icon_url)
 
-# URL 인코딩 처리
-manifest_data_url = "data:application/json;charset=utf-8," + urllib.parse.quote(raw_manifest)
+# HTML/CSS 설정 주입 (f-string을 빼고 일반 문자열과 .replace로 처리)
 
 css_and_icon_code = f"""
 <head>

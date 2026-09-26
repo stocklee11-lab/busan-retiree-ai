@@ -17,7 +17,7 @@ st.set_page_config(
 
 # 모바일 최적화 상단 여백 제거 및 아이콘 설정 (한 줄 통합으로 코드 소실 방지)
 icon_url = "https://raw.githubusercontent.com/stocklee11-lab/busan-retiree-ai/main/app_icon.png"
-PWA 매니페스트 사전 생성 및 URL 인코딩 (문법 에러 방지)
+
 manifest_data = {
 "name": "Residence-Selection",
 "short_name": "Residence-Selection",
@@ -32,20 +32,17 @@ manifest_data = {
 }
 manifest_json_str = urllib.parse.quote(json.dumps(manifest_data))
 
-HTML head 주입 및 상단 여백 제거 CSS (따옴표 3개 적용)
 css_and_icon_code = f"""
 (head)
-(link rel="manifest" href="data:application/json;charset=utf-8,{manifest_json}")
+(link rel="manifest" href="data:application/json;charset=utf-8,{manifest_json_str}")
 (link rel="apple-touch-icon" sizes="180x180" href="{icon_url}")
 (link rel="icon" type="image/png" href="{icon_url}")
 (/head)
 (style)
-/* 상단 기본 여백 제거 /
 .block-container {{
 padding-top: 1rem !important;
 padding-bottom: 0rem !important;
 }}
-/ Streamlit 우측 상단 메뉴 및 헤더 숨기기 */
 #MainMenu {{ visibility: hidden; }}
 header[data-testid="stHeader"] {{
 background-color: transparent !important;

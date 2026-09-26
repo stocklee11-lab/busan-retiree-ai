@@ -13,30 +13,24 @@ st.set_page_config(
     layout="wide"
 )
 
-# 2. 모바일 앱 이름 및 아이콘 설정 PWA
+# 2. 모바일 앱 이름(Residence-Selection) 및 아이콘 설정 PWA
 icon_url = "https://raw.githubusercontent.com/stocklee11-lab/busan-retiree-ai/main/app_icon.png"
 
-# PWA 매니페스트 설정
-raw_manifest = """{
-  "name": "Residence-Selection",
-  "short_name": "Residence-Selection",
-  "start_url": ".",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
-  "icons": [
-    {
-      "src": "ICON_URL_PLACEHOLDER",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "ICON_URL_PLACEHOLDER",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
-}""".replace("ICON_URL_PLACEHOLDER", icon_url)
+# PWA 매니페스트 사전 생성 및 URL 인코딩 (문법 오류 원천 차단)
+manifest_data = {
+    "name": "Residence-Selection",
+    "short_name": "Residence-Selection",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#ffffff",
+    "icons": [
+        {"src": icon_url, "sizes": "192x192", "type": "image/png"},
+        {"src": icon_url, "sizes": "512x512", "type": "image/png"}
+    ]
+}
+manifest_json_str = urllib.parse.quote(json.dumps(manifest_data))
+manifest_data_url = "data:application/json;charset=utf-8," + manifest_json_str
 
 # HTML/CSS 설정 주입 (f-string을 빼고 일반 문자열과 .replace로 처리)
 

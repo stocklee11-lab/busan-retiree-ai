@@ -4,11 +4,10 @@ import numpy as np
 import pydeck as pdk
 from sklearn.metrics.pairwise import cosine_similarity
 
-# 1. 페이지 기본 설정
 st.set_page_config(
-    page_title="최적 거주지 추천 대시보드",
-    page_icon="app_icon.png",  # 브라우저 탭 아이콘 (파비콘)
-    layout="wide",
+    page_title="Residence-Selection",
+    page_icon="https://raw.githubusercontent.com/stocklee11-lab/busan-retiree-ai/main/app_icon.png",
+    layout="wide"
 )
 
 # 2. 모바일 홈 화면 설치 전용 아이콘(apple-touch-icon) 및 상단 여백 제거 CSS

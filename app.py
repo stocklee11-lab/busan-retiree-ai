@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import pydeck as pdk
 from sklearn.metrics.pairwise import cosine_similarity
+import json
+import urllib.parse
 
 st.set_page_config(
     page_title="Residence-Selection",
@@ -15,8 +17,8 @@ st.set_page_config(
 
 # 모바일 최적화 상단 여백 제거 및 아이콘 설정 (한 줄 통합으로 코드 소실 방지)
 icon_url = "https://raw.githubusercontent.com/stocklee11-lab/busan-retiree-ai/main/app_icon.png"
-# PWA 매니페스트 설정 변수 정의 (NameError 해결)
-manifest_json = f"""{{
+PWA 매니페스트 사전 생성 및 URL 인코딩 (문법 에러 방지)
+manifest_data = {
 "name": "Residence-Selection",
 "short_name": "Residence-Selection",
 "start_url": ".",
@@ -24,18 +26,11 @@ manifest_json = f"""{{
 "background_color": "#ffffff",
 "theme_color": "#ffffff",
 "icons": [
-{{
-"src": "{icon_url}",
-"sizes": "192x192",
-"type": "image/png"
-}},
-{{
-"src": "{icon_url}",
-"sizes": "512x512",
-"type": "image/png"
-}}
+{"src": icon_url, "sizes": "192x192", "type": "image/png"},
+{"src": icon_url, "sizes": "512x512", "type": "image/png"}
 ]
-}}"""
+}
+manifest_json_str = urllib.parse.quote(json.dumps(manifest_data))
 
 HTML head 주입 및 상단 여백 제거 CSS (따옴표 3개 적용)
 css_and_icon_code = f"""
